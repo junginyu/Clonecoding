@@ -33,7 +33,7 @@ for i in cal {
         stack.append(stack.removeLast() * stack.removeLast())
     }
     else {
-        let index = i.asciiValue! - 65
+        let index = i
         stack.append(nums[Int(index)])
     }
 }
