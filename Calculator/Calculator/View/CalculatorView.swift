@@ -8,12 +8,24 @@
 import SwiftUI
 import Foundation
 
+enum CalcButton: String {
+    case add
+    case subtract
+    case divide
+    case multiply
+    case equal
+    case clear
+    case decimal
+    case percent
+    case negative
+}
+
 struct CalculatorView: View {
     var buttonColor = Color(UIColor(red: 55/255.0, green: 55/255.0, blue: 55/255.0, alpha: 1))
     @State var value = "0"
     
-    
     var body: some View {
+        
         VStack {
             HStack {
                 Spacer()
@@ -29,28 +41,28 @@ struct CalculatorView: View {
             .padding(.horizontal, 20)
             
             HStack {
-                calButton(buttonColor: Color(.lightGray), iconImage: value == "0" ? "AC" : "C", buttonTextColor: Color.black, value: $value)
-                calButton(buttonColor: Color(.lightGray), iconImage: "+/-", buttonTextColor: Color.black, value: $value)
-                calButton(buttonColor: Color(.lightGray), iconImage: "%", buttonTextColor: Color.black, value: $value)
-                calButton(buttonColor: Color.orange, iconImage: "/", value: $value)
+                CalButton(buttonColor: Color(.lightGray), iconImage: value == "0" ? "AC" : "C", buttonTextColor: Color.black, value: $value)
+                CalButton(buttonColor: Color(.lightGray), iconImage: "+/-", buttonTextColor: Color.black, value: $value)
+                CalButton(buttonColor: Color(.lightGray), iconImage: "%", buttonTextColor: Color.black, value: $value)
+                CalButton(buttonColor: Color.orange, iconImage: "/", value: $value)
             }
             HStack {
-                calButton(iconImage: "7", value: $value)
-                calButton(iconImage: "8", value: $value)
-                calButton(iconImage: "9", value: $value)
-                calButton(buttonColor: Color.orange, iconImage: "x", value: $value)
+                ForEach(7..<10) { i in
+                    CalButton(iconImage: String(i), value: $value)
+                }
+                CalButton(buttonColor: Color.orange, iconImage: "x", value: $value)
             }
             HStack {
-                calButton(iconImage: "4", value: $value)
-                calButton(iconImage: "5", value: $value)
-                calButton(iconImage: "6", value: $value)
-                calButton(buttonColor: Color.orange, iconImage: "-", value: $value)
+                ForEach(4..<7) { i in
+                    CalButton(iconImage: String(i), value: $value)
+                }
+                CalButton(buttonColor: Color.orange, iconImage: "-", value: $value)
             }
             HStack {
-                calButton(iconImage: "1", value: $value)
-                calButton(iconImage: "2", value: $value)
-                calButton(iconImage: "3", value: $value)
-                calButton(buttonColor: Color.orange, iconImage: "+", value: $value)
+                ForEach(1..<4) { i in
+                    CalButton(iconImage: String(i), value: $value)
+                }
+                CalButton(buttonColor: Color.orange, iconImage: "+", value: $value)
             }
             HStack {
                 Button(action: {
@@ -66,8 +78,8 @@ struct CalculatorView: View {
                                 .font(.system(size: 35))
                         )
                 }
-                calButton(iconImage: ".", value: $value)
-                calButton(buttonColor: Color.orange, iconImage: "=", value: $value)
+                CalButton(iconImage: ".", value: $value)
+                CalButton(buttonColor: Color.orange, iconImage: "=", value: $value)
             }
         }
     }
@@ -78,7 +90,7 @@ struct CalculatorView: View {
     
 }
 
-struct calButton: View {
+struct CalButton: View {
     var buttonColor = Color(UIColor(red: 55/255.0, green: 55/255.0, blue: 55/255.0, alpha: 1))
     var iconImage: String
     var buttonTextColor = Color.white
