@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Calculator
+
+  Created by 유정인 on 2022/05/21.
+  
+*/
+
+"CFBundleDisplayName" = "계산기";
