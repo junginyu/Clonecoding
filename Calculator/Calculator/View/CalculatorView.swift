@@ -8,20 +8,9 @@
 import SwiftUI
 import Foundation
 
-enum CalcButton: String {
-    case add
-    case subtract
-    case divide
-    case multiply
-    case equal
-    case clear
-    case decimal
-    case percent
-    case negative
-}
-
 struct CalculatorView: View {
     var buttonColor = Color(UIColor(red: 55/255.0, green: 55/255.0, blue: 55/255.0, alpha: 1))
+    @State var arithmeticOperation = ArithmeticOperation()
     @State var value = "0"
     
     var body: some View {
@@ -35,36 +24,38 @@ struct CalculatorView: View {
                     .minimumScaleFactor(0.5)
                     .foregroundColor(Color.white)
                     .font(.system(size: 90))
+                    
 //                    .fontWeight(.light)
                 
             }
             .padding(.horizontal, 20)
             
             HStack {
-                CalButton(buttonColor: Color(.lightGray), iconImage: value == "0" ? "AC" : "C", buttonTextColor: Color.black, value: $value)
-                CalButton(buttonColor: Color(.lightGray), iconImage: "+/-", buttonTextColor: Color.black, value: $value)
-                CalButton(buttonColor: Color(.lightGray), iconImage: "%", buttonTextColor: Color.black, value: $value)
-                CalButton(buttonColor: Color.orange, iconImage: "/", value: $value)
+                OperatorButtonView(buttonColor: Color(.lightGray), iconImage: "AC", buttonTextColor: Color.black, arithmeticOperation: $arithmeticOperation, value: $value)
+                OperatorButtonView(buttonColor: Color(.lightGray), iconImage: "+/-", buttonTextColor: Color.black, arithmeticOperation: $arithmeticOperation, value: $value)
+                OperatorButtonView(buttonColor: Color(.lightGray), iconImage: "%", buttonTextColor: Color.black, arithmeticOperation: $arithmeticOperation, value: $value)
+                OperatorButtonView(buttonColor: Color.orange, iconImage: "/", arithmeticOperation: $arithmeticOperation, value: $value)
             }
             HStack {
                 ForEach(7..<10) { i in
-                    CalButton(iconImage: String(i), value: $value)
+                    CalButtonView(iconImage: String(i), arithmeticOperation: $arithmeticOperation, value: $value)
                 }
-                CalButton(buttonColor: Color.orange, iconImage: "x", value: $value)
+                OperatorButtonView(buttonColor: Color.orange, iconImage: "x", arithmeticOperation: $arithmeticOperation, value: $value)
             }
             HStack {
                 ForEach(4..<7) { i in
-                    CalButton(iconImage: String(i), value: $value)
+                    CalButtonView(iconImage: String(i), arithmeticOperation: $arithmeticOperation, value: $value)
                 }
-                CalButton(buttonColor: Color.orange, iconImage: "-", value: $value)
+                OperatorButtonView(buttonColor: Color.orange, iconImage: "-", arithmeticOperation: $arithmeticOperation, value: $value)
             }
             HStack {
                 ForEach(1..<4) { i in
-                    CalButton(iconImage: String(i), value: $value)
+                    CalButtonView(iconImage: String(i), arithmeticOperation: $arithmeticOperation, value: $value)
                 }
-                CalButton(buttonColor: Color.orange, iconImage: "+", value: $value)
+                OperatorButtonView(buttonColor: Color.orange, iconImage: "+", arithmeticOperation: $arithmeticOperation, value: $value)
             }
             HStack {
+                // 0 버튼
                 Button(action: {
                     
                 }) {
@@ -78,46 +69,9 @@ struct CalculatorView: View {
                                 .font(.system(size: 35))
                         )
                 }
-                CalButton(iconImage: ".", value: $value)
-                CalButton(buttonColor: Color.orange, iconImage: "=", value: $value)
+                OperatorButtonView(iconImage: ".", arithmeticOperation: $arithmeticOperation, value: $value)
+                OperatorButtonView(buttonColor: Color.orange, iconImage: "=", arithmeticOperation: $arithmeticOperation, value: $value)
             }
-        }
-    }
-    
-//    func didTap(button: iconImage) {
-//
-//    }
-    
-}
-
-struct CalButton: View {
-    var buttonColor = Color(UIColor(red: 55/255.0, green: 55/255.0, blue: 55/255.0, alpha: 1))
-    var iconImage: String
-    var buttonTextColor = Color.white
-    var buttonSize = (UIScreen.main.bounds.width - 60) / 4
-    @Binding var value: String
-    
-    var body: some View {
-        Button(action: {
-            if value == "0" {
-                value = iconImage
-            } else {
-                value += iconImage
-            }
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            numberFormatter.maximumFractionDigits = 9
-            value = (numberFormatter.string(for: Double(value.components(separatedBy: ",").joined()))!)
-            
-        }) {
-            Circle()
-                .frame(width: buttonSize, height: buttonSize)
-                .foregroundColor(buttonColor)
-                .overlay(Text(iconImage)
-                    .fontWeight(.regular)
-                    .foregroundColor(buttonTextColor)
-                    .font(.system(size: 35))
-                )
         }
     }
 }
